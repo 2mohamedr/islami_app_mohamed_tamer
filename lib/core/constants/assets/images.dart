@@ -12,4 +12,9 @@ abstract class Assets {
   static const String leftCorner = "assets/images/img_left_corner.png";
   static const String rightCorner = "assets/images/img_right_corner.png";
   static const String bottomDecoration = "assets/images/bottom_decoration.png";
+  static const String hadesHeader = "assets/images/img_header.png";
+  static const String hadesLeftCorner = "assets/images/hades_left_corner.png";
+  static const String hadesRightCorner = "assets/images/hades_right_corner.png";
+  static const String hadesBottomDecoration =
+      "assets/images/hades_bottom_decoration.png";
 }

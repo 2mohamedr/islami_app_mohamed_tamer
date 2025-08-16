@@ -20,9 +20,9 @@ class _LayouteViewState extends State<LayouteView> {
   int SelectedIndex = 0;
   List<Widget> screen = [
     QuranView(),
-    TimeView(),
     HadethView(),
     TasbehView(),
+    TimeView(),
     RadioView(),
   ];
 
