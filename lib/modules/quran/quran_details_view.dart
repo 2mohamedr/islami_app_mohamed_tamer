@@ -85,7 +85,5 @@ class _QuranDetailsViewState extends State<QuranDetailsView> {
     );
     verses = contant.split("\n");
     setState(() {});
-    print(verses.length);
-    print(contant);
   }
 }

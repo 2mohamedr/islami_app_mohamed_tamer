@@ -1,11 +1,23 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:islami/models/hadse_data.dart';
 import 'package:islami/modules/hades/widget/hadeth_item.dart';
-
 import '../../core/constants/assets/images.dart';
 
-class HadethView extends StatelessWidget {
-  const HadethView({super.key});
+class HadethView extends StatefulWidget {
+  @override
+  State<HadethView> createState() => _HadethViewState();
+}
+
+class _HadethViewState extends State<HadethView> {
+  List<HadeithDataModel> hadetkData = [];
+
+  @override
+  void initState() {
+    super.initState();
+    loadDataFrohadeth();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,26 +31,37 @@ class HadethView extends StatelessWidget {
       child: Column(
         children: [
           Image.asset(Assets.hadesHeader),
-          CarouselSlider(
-            items: [HadethItem()],
-            options: CarouselOptions(
-              height: MediaQuery.of(context).size.height * 0.6,
-              aspectRatio: 16 / 9,
-              viewportFraction: 0.8,
-              initialPage: 0,
-              enableInfiniteScroll: true,
-              reverse: false,
-              autoPlay: false,
-              autoPlayInterval: Duration(seconds: 3),
-              autoPlayAnimationDuration: Duration(milliseconds: 800),
-              autoPlayCurve: Curves.fastOutSlowIn,
-              enlargeCenterPage: true,
-              enlargeFactor: 0.3,
-              scrollDirection: Axis.horizontal,
+          if (hadetkData.isEmpty)
+            const Center(child: CircularProgressIndicator())
+          else
+            CarouselSlider(
+              items: hadetkData
+                  .map((h) => HadethItem(hadeithDataModel: h))
+                  .toList(),
+              options: CarouselOptions(
+                height: MediaQuery.of(context).size.height * 0.6,
+                enlargeCenterPage: true,
+                scrollDirection: Axis.vertical,
+              ),
             ),
-          ),
         ],
       ),
     );
+  }
+
+  Future<void> loadDataFrohadeth() async {
+    for (int i = 1; i <= 50; i++) {
+      String hadeth = await rootBundle.loadString("assets/dataHadeeth/h$i.txt");
+      List<String> lines = hadeth.trim().split("\n");
+      String hadeithTitle = lines.first;
+      String hadeithContent = lines.skip(1).join("\n");
+
+      HadeithDataModel data = HadeithDataModel(
+        hadeithTitle: hadeithTitle,
+        hadeithContent: hadeithContent,
+      );
+      hadetkData.add(data);
+    }
+    setState(() {});
   }
 }
