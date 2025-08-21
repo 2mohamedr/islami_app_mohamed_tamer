@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:islami/core/constants/theme_manager.dart';
+import 'package:islami/core/servaices/local_storeage_.dart';
 import 'package:islami/modules/layoute/layoute_view.dart';
 import 'package:islami/modules/splach/splach_veiw.dart';
 
 import 'modules/quran/quran_details_view.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  LocalStoreage.init();
   runApp(const MyApp());
 }
 

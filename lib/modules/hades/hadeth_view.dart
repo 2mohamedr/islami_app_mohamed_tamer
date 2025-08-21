@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:islami/models/hadse_data.dart';
 import 'package:islami/modules/hades/widget/hadeth_item.dart';
+
 import '../../core/constants/assets/images.dart';
 
 class HadethView extends StatefulWidget {
@@ -41,7 +42,7 @@ class _HadethViewState extends State<HadethView> {
               options: CarouselOptions(
                 height: MediaQuery.of(context).size.height * 0.6,
                 enlargeCenterPage: true,
-                scrollDirection: Axis.vertical,
+                scrollDirection: Axis.horizontal,
               ),
             ),
         ],

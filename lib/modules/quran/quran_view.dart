@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:islami/core/constants/assets/colors.dart';
+import 'package:islami/core/constants/assets/constant.dart';
+import 'package:islami/core/servaices/local_keys.dart';
+import 'package:islami/core/servaices/local_storeage_.dart';
+import 'package:islami/models/sura_data.dart';
+import 'package:islami/modules/quran/quran_details_view.dart';
 import 'package:islami/modules/quran/recently_sura_widget.dart';
 import 'package:islami/modules/quran/sura_list_widget.dart';
 
 import '../../core/constants/assets/images.dart';
 
 class QuranView extends StatefulWidget {
+
   const QuranView({super.key});
 
   @override
@@ -14,7 +20,13 @@ class QuranView extends StatefulWidget {
 
 class _QuranViewState extends State<QuranView> {
   @override
+  void initState() {
+    super.initState();
+    loadRecentData();
+  }
+  @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -66,15 +78,43 @@ class _QuranViewState extends State<QuranView> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 20),
-                const RecentlySuraWidget(),
-                const SizedBox(height: 20),
-                const SuraListWidget(),
+
+                RecentlySuraWidget(
+                  suraData: recentSuraList,
+                ),
+
+                SuraListWidget(onSuraTab: onSuraTab),
               ],
             ),
           ),
         ),
       ),
     );
+  }
+
+  List<String> recentSuraIndexList = [];
+  List<SuraData> recentSuraList = [];
+
+  onSuraTab(int index) {
+    recentSuraIndexList.add(index.toString());
+    LocalStoreage.setStringList(
+      LocalStorageKeys.recentSura,
+      recentSuraIndexList,
+    );
+    Navigator.pushNamed(
+      context,
+      QuranDetailsView.routeName,
+      arguments: Constants.suraDataList[index],
+    );
+  }
+
+  loadRecentData() {
+    recentSuraIndexList =
+        LocalStoreage.getStringList(LocalStorageKeys.recentSura) ?? [];
+    for (var index in recentSuraIndexList) {
+      int indexInt = int.parse(index);
+
+      recentSuraList.add(Constants.suraDataList[indexInt]);
+    }
   }
 }

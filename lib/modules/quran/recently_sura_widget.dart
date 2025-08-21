@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:islami/models/sura_data.dart';
 import 'package:islami/modules/quran/recently_item_widget.dart';
 
-class RecentlySuraWidget extends StatelessWidget {
-  const RecentlySuraWidget({super.key});
 
+class RecentlySuraWidget extends StatelessWidget {
+  const RecentlySuraWidget({super.key, required this.suraData});
+
+  final List<SuraData> suraData;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -18,13 +21,15 @@ class RecentlySuraWidget extends StatelessWidget {
           ),
         ),
         SizedBox(
-          height: 155,
+          height: 170,
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
             padding: EdgeInsets.symmetric(horizontal: 20),
 
             itemBuilder: (context, index) {
-              return RecentlyItemWidget();
+              return RecentlyItemWidget(
+                suraData: suraData[index],
+              );
             },
             separatorBuilder: (context, index) {
               return SizedBox(width: 10);
