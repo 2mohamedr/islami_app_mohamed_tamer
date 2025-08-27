@@ -3,11 +3,14 @@ import 'package:islami/models/sura_data.dart';
 import 'package:islami/modules/quran/sura_list_item.dart';
 
 class SuraListWidget extends StatelessWidget {
-  const SuraListWidget(
-      {super.key, required this.onSuraTab, required this.suraData});
+  const SuraListWidget({
+    super.key,
+    required this.onSuraTab,
+    required this.suraData,
+  });
 
   final void Function(int) onSuraTab;
-  final List <SuraData> suraData;
+  final List<SuraData> suraData;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -23,9 +26,10 @@ class SuraListWidget extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 20),
             itemBuilder: (context, index) {
               return SuraListItem(
-                  onSuraTab: () =>
-                      onSuraTab(int.parse(suraData[index].suraId) - 1),
-                  suraData: suraData[index]);
+                onSuraTab: () =>
+                    onSuraTab(int.parse(suraData[index].suraId) - 1),
+                suraData: suraData[index],
+              );
             },
 
             separatorBuilder: (context, index) {

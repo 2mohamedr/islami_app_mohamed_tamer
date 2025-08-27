@@ -7,8 +7,11 @@ class SuraListItem extends StatelessWidget {
   final SuraData suraData;
   final VoidCallback onSuraTab;
 
-  const SuraListItem(
-      {super.key, required this.suraData, required this.onSuraTab});
+  const SuraListItem({
+    super.key,
+    required this.suraData,
+    required this.onSuraTab,
+  });
 
   @override
   Widget build(BuildContext context) {
