@@ -29,7 +29,7 @@ class RecentlyItemWidget extends StatelessWidget {
                   style: Theme.of(context).textTheme.headlineSmall,
                 ),
                 Text(
-                  suraData.suraId,
+                  suraData.suraNameAr,
                   style: Theme.of(context).textTheme.headlineSmall,
                 ),
                 Text(

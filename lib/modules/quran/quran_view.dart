@@ -24,6 +24,8 @@ class _QuranViewState extends State<QuranView> {
     super.initState();
     loadRecentData();
   }
+
+  String searchQuary = "";
   @override
   Widget build(BuildContext context) {
 
@@ -46,6 +48,13 @@ class _QuranViewState extends State<QuranView> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: TextFormField(
+                    onChanged: (value) {
+                      searchQuary = value;
+                      search();
+                      setState(() {
+
+                      });
+                    },
                     cursorColor: ColorsPallete.PrimaryColor,
                     decoration: InputDecoration(
                       hintText: "Sura Name",
@@ -79,11 +88,26 @@ class _QuranViewState extends State<QuranView> {
                   ),
                 ),
 
-                RecentlySuraWidget(
-                  suraData: recentSuraList,
-                ),
+                recentSuraIndexList.isNotEmpty ?
+                Visibility(
+                  visible: searchQuary.isEmpty,
+                  replacement: SuraListWidget(onSuraTab: onSuraTab,
+                    suraData: searchSuraList,
+                  ),
+                  child: Column(
+                    children: [
+                      RecentlySuraWidget(
+                        suraData: recentSuraList,
+                      ),
+                    ],
+                  ),
+                ) : Center(child: Text("No recent sura", style: TextStyle(
+                    fontSize: 16, color: ColorsPallete.PrimaryColor
+                ),)),
 
-                SuraListWidget(onSuraTab: onSuraTab),
+                SuraListWidget(onSuraTab: onSuraTab,
+                  suraData: Constants.suraDataList,
+                ),
               ],
             ),
           ),
@@ -96,11 +120,7 @@ class _QuranViewState extends State<QuranView> {
   List<SuraData> recentSuraList = [];
 
   onSuraTab(int index) {
-    recentSuraIndexList.add(index.toString());
-    LocalStoreage.setStringList(
-      LocalStorageKeys.recentSura,
-      recentSuraIndexList,
-    );
+    _CacheSuraIndex(index);
     Navigator.pushNamed(
       context,
       QuranDetailsView.routeName,
@@ -108,13 +128,45 @@ class _QuranViewState extends State<QuranView> {
     );
   }
 
+  _CacheSuraIndex(int index) {
+    var indexString = index.toString();
+    if (recentSuraIndexList.contains(indexString)) {
+      return;
+    }
+    if (recentSuraIndexList.length == 5) {
+      recentSuraIndexList.removeLast();
+    }
+    recentSuraIndexList.insert(0, indexString);
+    LocalStoreage.setStringList(
+      LocalStorageKeys.recentSura,
+      recentSuraIndexList,
+    );
+    loadRecentData();
+    setState(() {
+
+    });
+  }
   loadRecentData() {
+    recentSuraIndexList = [];
+    recentSuraList = [];
     recentSuraIndexList =
         LocalStoreage.getStringList(LocalStorageKeys.recentSura) ?? [];
     for (var index in recentSuraIndexList) {
       int indexInt = int.parse(index);
 
       recentSuraList.add(Constants.suraDataList[indexInt]);
+    }
+  }
+
+  List<SuraData> searchSuraList = [];
+
+  void search() {
+    searchSuraList = [];
+    for (var sura in Constants.suraDataList) {
+      if (sura.suraNameEr.toLowerCase().contains(searchQuary) ||
+          sura.suraNameAr.contains(searchQuary)) {
+        searchSuraList.add(sura);
+      }
     }
   }
 }
